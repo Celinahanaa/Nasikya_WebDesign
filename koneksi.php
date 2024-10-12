@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 
 // Connect to the database
-$koneksi = mysqli_connect("mysql.railway.internal:3306", "root", "ErRTnIynEBrjrvyOEgjdJBwFtUsZRPmG", "railway");
+$koneksi = mysqli_connect("junction.proxy.rlwy.net:30145", "root", "ErRTnIynEBrjrvyOEgjdJBwFtUsZRPmG", "railway");
 
 // Check connection
 if (mysqli_connect_errno()) {
