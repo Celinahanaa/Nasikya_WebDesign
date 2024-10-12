@@ -3,7 +3,7 @@ Mahanta is a digital platform created specifically to highlight and promote visu
 
 # Tampilan Website
 **Halaman Login**
-![alt text](https://github.com/Celinahanaa/Mahanta/blob/main/ss/ss%20ilogin.png?raw=true)
+![alt text](https://github.com/Celinahanaa/Mahanta/blob/main/ss/ss%20login.png?raw=true)
 **Halaman Register**
 ![alt text](https://github.com/Celinahanaa/Mahanta/blob/main/ss/ss%20register.png?raw=true)
 **Halaman Dashboard**
