@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 
 // Connect to the database
-$koneksi = mysqli_connect("localhost:3306", "root", "root", "mahanta");
+$koneksi = mysqli_connect("mysql.railway.internal", "root", "ErRTnIynEBrjrvyOEgjdJBwFtUsZRPmG", "railway");
 
 // Check connection
 if (mysqli_connect_errno()) {
