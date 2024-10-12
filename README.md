@@ -3,14 +3,14 @@ Mahanta is a digital platform created specifically to highlight and promote visu
 
 # Tampilan Website
 **Halaman Login**
-![alt text](https://github.com/Celinahanaa/Kaliku/blob/main/img/ss%20index.png?raw=true)
+![alt text](https://github.com/Celinahanaa/Mahanta/blob/main/ss/ss%20ilogin.png?raw=true)
 **Halaman Register**
-![alt text](https://github.com/Celinahanaa/Kaliku/blob/main/img/ss%20daftar.png?raw=true)
+![alt text](https://github.com/Celinahanaa/Mahanta/blob/main/ss/ss%20daftar.png?raw=true)
 **Halaman Dashboard**
-![alt text](https://github.com/Celinahanaa/Kaliku/blob/main/img/ss%20dasbor.png?raw=true)
+![alt text](https://github.com/Celinahanaa/Mahanta/blob/main/ss/ss%20dashboard.png?raw=true)
 **Halaman About**
-![alt text](https://github.com/Celinahanaa/Kaliku/blob/main/img/ss%20tambah%20pemasukan.png?raw=true)
+![alt text](https://github.com/Celinahanaa/Mahanta/blob/main/ss/ss%20about.png?raw=true)
 **Halaman Art**
-![alt text](https://github.com/Celinahanaa/Kaliku/blob/main/img/ss%20laporan.png?raw=true)
+![alt text](https://github.com/Celinahanaa/Mahanta/blob/main/ss/ss%20artpng?raw=true)
 
 # Demo Website - Mahanta
