@@ -13,7 +13,7 @@ Mahanta is a digital platform created specifically to highlight and promote visu
 **Art Page**
 ![alt text](https://github.com/Celinahanaa/Mahanta/blob/main/ss/ss%20art.png?raw=true)
 
-# Demonstration Website - Mahanta[
+# Demonstration Website - Mahanta
 https://youtu.be/nlDcP79LZsk?si=kn8MPTZgH81G-Cgw
 
 # Hosting Website - Mahanta
