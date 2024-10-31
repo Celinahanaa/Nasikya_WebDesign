@@ -53,6 +53,25 @@ if (isset($_POST["submit"])) {
     <title>Register</title>
     <link rel="stylesheet" href="logreg.css">
     <style>
+        /* css alert */
+        .register-message {
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            margin: 20px auto;
+            width: 300px;
+            height: 40px;
+            background: #F584B2;
+            border: 1px solid #F584B2; 
+            border-radius: 2px;
+            font-size: 0.8em;
+            color: #fff;
+            font-weight: 300; 
+            letter-spacing: 1px;
+            line-height: 40px; 
+            text-decoration: none; 
+            z-index: 9999;
+        }
         /* css popup */
         .popup {
             display: none;
@@ -116,9 +135,6 @@ if (isset($_POST["submit"])) {
         <div class="register">
             <div class="form-box register">
                 <h2>Register</h2>
-                <?php if (!$show_popup && $register_message): ?>
-                    <p style="color: red; text-align: center; "><?= $register_message ?></p>
-                <?php endif; ?>
                 <form action="register.php" method="post" autocomplete="off">
                     <div class="input-box">
                         <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
@@ -146,6 +162,9 @@ if (isset($_POST["submit"])) {
                     </div>
                 </form>
             </div>
+            <?php if (!$show_popup && $register_message): ?>
+                    <p class="register-message"><?= $register_message ?></p>
+            <?php endif; ?>
         </div>
         <!-- register end -->
 
