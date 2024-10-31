@@ -1,6 +1,7 @@
 <?php 
 session_start();
 require 'koneksi.php';
+$login_message = "";
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = mysqli_real_escape_string($koneksi, $_POST["username"]);
@@ -16,10 +17,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             header("Location: dashboard.php");  
             exit();
         } else {
-            echo "<script>alert('Incorrect password');</script>";
+            $login_message = "Incorrect password";
         }
     } else {
-        echo "<script>alert('User not registered');</script>";
+        $login_message = "User not registered";
     }
 }
 ?>
@@ -51,6 +52,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         <div class="login">
             <div class="form-box login">
                 <h2>Login</h2>
+                <p style="color: red; text-align: center; margin: 0;"><?= $login_message ?></p>
                 <form action="index.php" method="POST" autocomplete="off">
                     <div class="input-box">
                         <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
