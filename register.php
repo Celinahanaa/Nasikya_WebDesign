@@ -1,5 +1,12 @@
 <?php
 require 'koneksi.php';
+$register_message = "";
+$email = "";
+$username = "";
+$password = "";
+$confirm = "";
+$show_popup = false;
+
 if (isset($_POST["submit"])) {
 
     $email = mysqli_real_escape_string($koneksi, $_POST["email"]);
@@ -9,19 +16,30 @@ if (isset($_POST["submit"])) {
 
     $duplicate = mysqli_query($koneksi, "SELECT * FROM user WHERE username = '$username' OR email = '$email'");
     if (mysqli_num_rows($duplicate) > 0) {
-        echo "<script>alert('Username or email already exists');</script>";
+        $register_message = "Username or email already exists";
+        $email = "";
+        $username = "";
+        $password = "";
+        $confirm = "";
     } else {
         if ($password == $confirm) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             
             $query = "INSERT INTO user (email, username, password) VALUES ('$email', '$username', '$hashed_password')";
             if (mysqli_query($koneksi, $query)) {
-                echo "<script>alert('Registration successful!');window.location.href = 'index.php'; </script>";
+                $register_message = "Registration successful! <br> Click OK to continue to the login page.";
+                $show_popup = true;                
+                $email = "";
+                $username = "";
+                $password = "";
+                $confirm = "";
             } else {
-                echo "<script>alert('Registration failed. Please try again.');</script>";
+                $register_message = "Registration failed. Please try again";
             }
         } else {
-            echo "<script>alert('Passwords do not match');</script>";
+            $register_message = "Passwords do not match";
+            $password = "";
+            $confirm = "";
         }
     }
 }
@@ -34,6 +52,50 @@ if (isset($_POST["submit"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="logreg.css">
+    <style>
+        /* css popup */
+        .popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .popup button {
+            display: inline-block; 
+            width: 100%;
+            height: 40px;
+            background: #F584B2;
+            border: 1px solid #F584B2; 
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #fff;
+            font-weight: 600; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 40px; 
+            text-decoration: none; 
+            margin-top: 20px;
+        }
+        .overlay {
+            display: none;            
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 500;
+        }
+    </style>
 </head>
 <body>
     <section>
@@ -54,15 +116,18 @@ if (isset($_POST["submit"])) {
         <div class="register">
             <div class="form-box register">
                 <h2>Register</h2>
+                <?php if (!$show_popup && $register_message): ?>
+                    <p style="color: red; text-align: center; "><?= $register_message ?></p>
+                <?php endif; ?>
                 <form action="register.php" method="post" autocomplete="off">
                     <div class="input-box">
                         <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
-                        <input name="email" id="email" type="email" required>
+                        <input name="email" id="email" type="email" value="<?php echo htmlspecialchars($email); ?>" required>
                         <label>Email</label>
                     </div>
                     <div class="input-box">
                         <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-                        <input name="username" id="username" type="text" required>
+                        <input name="username" id="username" type="text" value="<?php echo htmlspecialchars($username); ?>" required>
                         <label>Username</label>
                     </div>
                     <div class="input-box">
@@ -82,8 +147,17 @@ if (isset($_POST["submit"])) {
                 </form>
             </div>
         </div>
+        <!-- register end -->
+
+        <!-- Pop-up untuk pesan pendaftaran -->
+        <?php if ($show_popup): ?>
+            <div class="overlay" style="display: block;"></div>
+            <div class="popup" style="display: block;">
+                <p><?= $register_message; ?></p>
+                <button onclick="window.location.href='index.php'">OK</button>
+            </div>
+        <?php endif; ?>
     </section>
-    <!-- register end -->
 
     <!-- script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js" integrity="sha512-/6TZODGjYL7M8qb7P6SflJB/nTGE79ed1RfJk3dfm/Ib6JwCT4+tOfrrseEHhxkIhwG8jCl+io6eaiWLS/UX1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
