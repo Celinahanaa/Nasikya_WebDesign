@@ -2,6 +2,9 @@
 session_start();
 require 'koneksi.php';
 $login_message = "";
+$username = "";
+$password = "";
+$show_popup = false;
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = mysqli_real_escape_string($koneksi, $_POST["username"]);
@@ -18,9 +21,14 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             exit();
         } else {
             $login_message = "Incorrect password";
+            $show_popup = true; 
+            $password = "";
         }
     } else {
         $login_message = "User not registered";
+        $show_popup = true; 
+        $username = "";
+        $password = "";
     }
 }
 ?>
@@ -32,6 +40,26 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="logreg.css">
+    <style>
+        .login-message {
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            margin: 20px auto;
+            width: 200px;
+            height: 40px;
+            background: #F584B2;
+            border: 1px solid #F584B2; 
+            border-radius: 2px;
+            font-size: 0.8em;
+            color: #fff;
+            font-weight: 300; 
+            letter-spacing: 1px;
+            line-height: 40px; 
+            text-decoration: none; 
+            z-index: 9999;
+        }
+    </style>
 </head>
 <body>
     <section>
@@ -52,11 +80,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         <div class="login">
             <div class="form-box login">
                 <h2>Login</h2>
-                <p style="color: red; text-align: center; margin: 0;"><?= $login_message ?></p>
                 <form action="index.php" method="POST" autocomplete="off">
                     <div class="input-box">
                         <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-                        <input name="username" type="text" required>
+                        <input name="username" type="text" value="<?php echo htmlspecialchars($username); ?>" required>
                         <label>Username</label>
                     </div>
                     <div class="input-box">
@@ -70,6 +97,11 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                     </div>
                 </form>
             </div>
+            <?php if ($show_popup): ?>
+            <div class="login-message">
+                <p><?= $login_message; ?></p>
+            </div>
+            <?php endif; ?>
         </div>
         <!-- box login end -->
     </section>
