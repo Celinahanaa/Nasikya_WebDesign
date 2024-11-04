@@ -37,7 +37,7 @@ if (isset($_POST["submit"])) {
                 $register_message = "Registration failed. Please try again";
             }
         } else {
-            $register_message = "Passwords do not match";
+            $register_message = "Password do not match";
             $password = "";
             $confirm = "";
         }
