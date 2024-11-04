@@ -42,8 +42,8 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     <link rel="stylesheet" href="logreg.css">
     <style>
         .login-message {
-            display: flex; 
-            justify-content: center; 
+            display: flex;
+            justify-content: center;
             align-items: center;
             margin: 20px auto;
             width: 200px;
@@ -57,7 +57,15 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             letter-spacing: 1px;
             line-height: 40px; 
             text-decoration: none; 
+            animation: fadeInOut 8s forwards; /* Animation */
             z-index: 9999;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
         }
     </style>
 </head>
@@ -98,7 +106,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                 </form>
             </div>
             <?php if ($show_popup): ?>
-            <div class="login-message">
+            <div class="login-message" id="loginMessage">
                 <p><?= $login_message; ?></p>
             </div>
             <?php endif; ?>
@@ -111,9 +119,16 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     <script>
         let scene = document.getElementById('scene');
         let parallax = new Parallax(scene);
+
+        // Remove login message after 8 seconds
+        setTimeout(() => {
+            const loginMessage = document.getElementById('loginMessage');
+            if (loginMessage) {
+                loginMessage.classList.add('fade-out');
+            }
+        }, 900);
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <!-- script -->
 </body>
 </html>
