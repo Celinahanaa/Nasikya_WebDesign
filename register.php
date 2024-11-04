@@ -8,7 +8,6 @@ $confirm = "";
 $show_popup = false;
 
 if (isset($_POST["submit"])) {
-
     $email = mysqli_real_escape_string($koneksi, $_POST["email"]);
     $username = mysqli_real_escape_string($koneksi, $_POST["username"]);
     $password = mysqli_real_escape_string($koneksi, $_POST["password"]);
@@ -24,7 +23,6 @@ if (isset($_POST["submit"])) {
     } else {
         if ($password == $confirm) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            
             $query = "INSERT INTO user (email, username, password) VALUES ('$email', '$username', '$hashed_password')";
             if (mysqli_query($koneksi, $query)) {
                 $register_message = "Registration successful! <br> Click OK to continue to the login page.";
@@ -71,54 +69,103 @@ if (isset($_POST["submit"])) {
             line-height: 40px; 
             text-decoration: none; 
             z-index: 9999;
+            animation: fadeInOut 8s forwards; /* Animation */
+            z-index: 9999;
         }
-        /* css popup */
-        .popup {
-            display: none;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            border-radius: 8px;
-            text-align: center;
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
         }
-        .popup button {
-            display: inline-block; 
-            width: 100%;
-            height: 40px;
-            background: #F584B2;
-            border: 1px solid #F584B2; 
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            color: #fff;
-            font-weight: 600; 
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-align: center;
-            line-height: 40px; 
-            text-decoration: none; 
-            margin-top: 20px;
-        }
-        .overlay {
-            display: none;            
+
+        /* Popup styling */
+        .popup-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .popup {
+            position: relative;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            font-size: 1.23rem;
+            cursor: pointer;
+        }
+        .popup-icon {
+            width: 119px; 
+            margin-bottom: 15px; 
+        }
+        h3 {
+            font-size: 0.92rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .pp {
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .popup-btn {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 79%; 
+            text-align: center; 
+            display: inline-block; 
+        }
+        .primary-btn {
+            background: linear-gradient(45deg, #313684, #F584B2);
+            border: none;
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .secondary-btn {
+            background: none;
+            border: none;
+            color: #888;
+            text-decoration: underline;
+            font-weight: 400;
+        }
+        .popup-container.show {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 </head>
 <body>
     <section>
-        <!-- background start -->
+        <!-- Background Start -->
         <div class="container">
             <div id="scene">
                 <div class="layer" data-depth-x="-0.5"><img src="asset/box1.png"></div>
@@ -129,9 +176,9 @@ if (isset($_POST["submit"])) {
                 <div class="layer" data-depth-x="-0.25"><img src="asset/holo.png"></div>
             </div>
         </div>
-        <!-- background end -->
+        <!-- Background End -->
 
-        <!-- register start -->
+        <!-- Register Start -->
         <div class="register">
             <div class="form-box register">
                 <h2>Register</h2>
@@ -163,29 +210,71 @@ if (isset($_POST["submit"])) {
                 </form>
             </div>
             <?php if (!$show_popup && $register_message): ?>
-                    <p class="register-message"><?= $register_message ?></p>
+                <p class="register-message" id="registermessage"><?= $register_message ?></p>
             <?php endif; ?>
         </div>
-        <!-- register end -->
+        <!-- Register End -->
 
-        <!-- Pop-up untuk pesan pendaftaran -->
+        <!-- Popup for registration message -->
         <?php if ($show_popup): ?>
-            <div class="overlay" style="display: block;"></div>
-            <div class="popup" style="display: block;">
-                <p><?= $register_message; ?></p>
-                <button onclick="window.location.href='index.php'">OK</button>
+            <div class="popup-container show" id="popupContainer">
+                <div class="popup">
+                    <button class="close-btn" id="closeBtn">&times;</button>
+                    <img src="asset/mona.png" alt="Icon" class="popup-icon">
+                    <h3>Registration Complete! 🎉</h3>
+                    <p class="pp">Click OK to proceed to the login page and <br> let's start exploring!</p>
+                    <button class="popup-btn primary-btn" id="logoutBtn">OK</button>
+                    <button class="popup-btn secondary-btn" id="notNowBtn">Not now</button>
+                </div>
             </div>
+            <div class="overlay" style="display: block;"></div>
         <?php endif; ?>
     </section>
 
-    <!-- script -->
+    <!-- Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js" integrity="sha512-/6TZODGjYL7M8qb7P6SflJB/nTGE79ed1RfJk3dfm/Ib6JwCT4+tOfrrseEHhxkIhwG8jCl+io6eaiWLS/UX1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         let scene = document.getElementById('scene');
         let parallax = new Parallax(scene);
     </script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <!-- script -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons.esm.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const popupContainer = document.getElementById('popupContainer');
+            const closeBtn = document.getElementById('closeBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const notNowBtn = document.getElementById('notNowBtn');
+
+            // Close popup
+            closeBtn.addEventListener('click', function() {
+                popupContainer.classList.remove('show');
+            });
+
+            // Logout button action
+            logoutBtn.addEventListener('click', function() {
+                window.location.href = 'index.php'; // Adjust to your login URL
+            });
+
+            // Not Now button action
+            notNowBtn.addEventListener('click', function() {
+                popupContainer.classList.remove('show');
+            });
+
+            // Close popup when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === popupContainer) {
+                    popupContainer.classList.remove('show');
+                }
+            });
+        });
+
+        setTimeout(() => {
+            const registermessage = document.getElementById('registermessage');
+            if (registermessage) {
+                registermessage.classList.add('fade-out');
+            }
+        }, 800);
+        
+    </script>
 </body>
 </html>
