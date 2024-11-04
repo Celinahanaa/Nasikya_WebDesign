@@ -18,17 +18,99 @@ if (!empty($_SESSION["id"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-    </style>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
     <link href="https://unpkg.com/ionicons@5.5.2/dist/ionicons.css" rel="stylesheet">
     <link rel="stylesheet" href="dashboard.css">
+    <style>
+          .h3, .p, .logout-popup {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .logout-popup {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logout-popup-content {
+            position: relative;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 50px 20px 50px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease;
+            z-index: 1000;
+        }
+        @keyframes fadeIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        #logout-popup .cclose-btnn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        #logout-popup .popup-icon {
+            width: 120px; 
+            margin-bottom: 1px; 
+        }
+        #logout-popup h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        #logout-popup p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        #logout-popup .logout-popup button {
+            margin: 5px; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+        }
+        #logout-popup .popup-btn {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 80%; 
+            text-align: center; 
+            display: inline-block; 
+        }
+        #logout-popup .primary-btn {
+            background: linear-gradient(45deg, #313684, #F584B2);
+            border: none;
+            color: white;
+            font-weight: 500;
+            text-decoration: none; 
+        }
+        #logout-popup .secondary-btn {
+            background: none;
+            border: none;
+            color: #888;
+            text-decoration: underline;
+            font-weight: 400;
+        }
+    </style>
 </head>
 <body>
     <!-- cursor start -->
@@ -50,7 +132,7 @@ if (!empty($_SESSION["id"])) {
             <a href="dashboard.php">Home</a>
             <a href="about.php">About</a>
             <a href="art.php">Art</a>
-            <a href="logout.php" class="btnlogout-popup">Logout</a>
+            <button class="btnlogout-popup" id="logout-button">Logout</button>
         </nav>
     </header>
     <!-- navbar end -->
@@ -174,7 +256,7 @@ if (!empty($_SESSION["id"])) {
               <h4>MAHANTA</h4>
             </div>
             <div class="footer-col">
-              <h4>Kategori</h4>
+              <h4>Category</h4>
               <ul>
                 <li><a href="art.php" target="_blank">Nature</a></li>
                 <li><a href="art.php" target="_blank">Abstrak</a></li>
@@ -197,6 +279,19 @@ if (!empty($_SESSION["id"])) {
         </div>
      </footer>
      <!-- footer end -->
+
+    <!-- Popup Container -->
+    <div class="logout-popup" id="logout-popup">
+        <div class="logout-popup-content">
+            <button class="cclose-btnn" id="close-popup" aria-label="Close popup">&times;</button>
+            <img src="asset/iso.png" alt="icon" class="popup-icon">
+            <h3>Are you sure you want to leave <br> Mahanta?</h3>
+            <p class="p">Don’t miss out on the latest art updates, <br> inspiration, and creative moments! <br> Stay connected and inspired!</p>
+            <button class="popup-btn primary-btn" id="confirm-logout">Logout</button>
+            <button class="popup-btn secondary-btn" id="cancel-logout">Not Now</button>
+        </div>
+    </div>
+    <!-- pop up end -->
 
 <!-- script -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -265,11 +360,9 @@ var TrandingSlider = new Swiper('.tranding-slider', {
       prevEl: '.swiper-button-prev',
     }
   });
+// slider js end
 
-  // slider js end
-
-  //navbar start
-
+//navbar start
 let header = document.querySelector("header");
   let aboutSection = document.querySelector("#about");
 
@@ -283,8 +376,44 @@ let header = document.querySelector("header");
       }
   });
 //navbar end
-</script>
 
+//logout popup start
+const logoutButton = document.getElementById('logout-button'); // pastikan ID ini sesuai dengan HTML
+const logoutPopup = document.getElementById('logout-popup');
+const confirmLogout = document.getElementById('confirm-logout');
+const cancelLogout = document.getElementById('cancel-logout');
+const closePopup = document.getElementById('close-popup');
+
+const showLogoutPopup = (event) => {
+    event.preventDefault(); 
+    logoutPopup.style.display = 'flex'; 
+};
+
+logoutButton.addEventListener('click', showLogoutPopup);
+closePopup.addEventListener('click', function() {
+    logoutPopup.style.display = 'none'; 
+});
+
+confirmLogout.addEventListener('click', function() {
+    window.location.href = 'logout.php'; 
+});
+
+cancelLogout.addEventListener('click', function() {
+    logoutPopup.style.display = 'none'; 
+});
+
+logoutPopup.addEventListener('click', function(event) {
+    if (event.target === logoutPopup) {
+        logoutPopup.style.display = 'none'; 
+    }
+});
+
+// Mengatur event listener saat halaman dimuat
+window.addEventListener('load', function() {
+    logoutPopup.style.display = 'none'; // Pastikan pop-up tidak terlihat saat halaman dimuat
+});
+//logout popup end
+</script>
 <!-- script -->
 </body>
 </html>
